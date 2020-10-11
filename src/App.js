@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import './App.css';
+import 'semantic-ui-css/semantic.min.css';
+import { Menu, Segment } from 'semantic-ui-react';
+import MediaQuery from "react-responsive";
+//import imgs
 import logo from './logo.svg';
 import food1 from './food1.jpeg';
 import food2 from './food2.jpeg';
 import food3 from './food3.jpeg';
-import './App.css';
-import 'semantic-ui-css/semantic.min.css';
-import { Menu, Segment } from 'semantic-ui-react';
+
 
 
 function App() {
@@ -22,6 +25,7 @@ function App() {
 function MyMenu() {
   //set state for main menu
   const [curMenu, setCurMenu] = useState(null);
+  //handle click (including click twice)
   const handleItemClick = (e, { name }) => (curMenu === name) ? setCurMenu(null) : setCurMenu(name);
   //menu items
   const items = [
@@ -47,11 +51,25 @@ function MyMenu() {
       onClick: handleItemClick
     }
   ]
-  //handling click twice
+
+  var menu = <Menu pointing items={items} />;
+  var content = <MyContent curMenu={curMenu} />
   return (
-    <div style={(curMenu === null) ? null : { width: "40vw" }} >
-      <Menu pointing items={items} />
-      <MyContent curMenu={curMenu} />
+    <div>
+      {/* for computer */}
+      <MediaQuery minDeviceWidth={1080}>
+        <div style={(curMenu === null) ? null : { width: "40vw" }} >
+          {menu}
+          {content}
+        </div>
+      </MediaQuery >
+      {/* for mobile device */}
+      <MediaQuery maxDeviceWidth={1079}>
+        <div>
+          {menu}
+          {content}
+        </div>
+      </MediaQuery >
     </div>
   )
 }
